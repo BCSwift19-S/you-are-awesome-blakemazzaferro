@@ -20,10 +20,14 @@ class ViewController: UIViewController {
 
     @IBAction func showMessagePressed2(_ sender: UIButton) {
         messageLabel.text = "You Are Great!"
+        messageLabel.textColor = UIColor.blue
+        
     }
     
     @IBAction func showMessagePressed(_ sender: UIButton) {
         messageLabel.text = "You Are Awesome!"
+        messageLabel.textColor = UIColor.red
+        
     }
 }
 
