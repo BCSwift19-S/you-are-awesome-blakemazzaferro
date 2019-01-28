@@ -13,6 +13,8 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var awesomeImageView: UIImageView!
     @IBOutlet weak var messageLabel: UILabel!
+    @IBOutlet weak var soundSwitch: UISwitch!
+    
     var awesomePlayer = AVAudioPlayer()
     var index = -1
     var imageIndex = -1
@@ -23,10 +25,11 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
+    
     func nonRepeatingRandom(lastNumber: Int, maxValue: Int) -> Int {
         var newIndex: Int
         repeat {
-            newIndex = Int.random(in: 0..<maxValue)
+            newIndex = Int.random(in: 0..<maxValue-1 )
         } while lastNumber == newIndex
         return newIndex
     }
@@ -37,12 +40,21 @@ class ViewController: UIViewController {
                 try audioPlayer = AVAudioPlayer(data: sound.data)
                 audioPlayer.play()
             } catch {
-                print("ERROR: Data in \(soundName) could'nt be played as a sound.")
+                print("ERROR: Data in \(soundName) couldn't be played as a sound.")
             }
         } else {
             print("ERROR: File \(soundName) didn't load.")
         }
     }
+    
+    @IBAction func soundSwitchPressed(_ sender: UISwitch) {
+        if soundSwitch.isOn{
+            if soundIndex != -1 {
+                awesomePlayer.stop()
+            }
+        }
+    }
+    
     @IBAction func showMessagePressed(_ sender: UIButton) {
         let messages = ["You Are Fantastic!!!",
                         "You Are Great!",
@@ -63,10 +75,11 @@ class ViewController: UIViewController {
         awesomeImageView.image = UIImage(named: "image\(imageIndex)")
         
         //play a sound
-        soundIndex = nonRepeatingRandom(lastNumber: soundIndex, maxValue: numberOfSounds)
-        let soundName = "sound\(soundIndex)"
-        playSound(soundName: soundName, audioPlayer: &awesomePlayer)
-    
+        if soundSwitch.isOn {
+            let soundName = "sound\(soundIndex)"
+            playSound(soundName: soundName, audioPlayer: &awesomePlayer)
+            soundIndex = nonRepeatingRandom(lastNumber: soundIndex, maxValue: numberOfSounds)
+        }
     }
 
 }
