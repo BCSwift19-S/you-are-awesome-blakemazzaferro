@@ -23,46 +23,15 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-    
-    @IBAction func showMessagePressed(_ sender: UIButton) {
-        let messages = ["You Are Fantastic!!!",
-                        "You Are Great!",
-                        "You Are Amazing!",
-                        "When the Genius Bar needs help, they call you",
-                        "You brighten my day!",
-                        "You are da Bomb!",
-                        "Hey, fabulous!",
-                        "You are tremendous!",
-                        "You've got the design skills of Jony Ive!"]
-      
+    func nonRepeatingRandom(lastNumber: Int, maxValue: Int) -> Int {
         var newIndex: Int
-        
-        //show a message
         repeat {
-            newIndex = Int.random(in: 1..<messages.count)
-        } while index == newIndex
-        
-        index = newIndex
-        messageLabel.text = messages[index]
-        
-        //show an image
-        repeat {
-            newIndex = Int.random(in: 0..<numberOfImages)
-        } while imageIndex == newIndex
-        
-        imageIndex = newIndex
-        
-        awesomeImageView.image = UIImage(named: "image\(imageIndex)")
-        
-        //play a sound
-        repeat {
-            newIndex = Int.random(in: 0..<numberOfSounds)
-        } while soundIndex == newIndex
-        
-        soundIndex = newIndex
-        
-        var soundName = "sound\(soundIndex)"
-        
+            newIndex = Int.random(in: 0..<maxValue)
+        } while lastNumber == newIndex
+        return newIndex
+    }
+    
+    func playSound(soundName: String){
         if let sound = NSDataAsset(name: soundName) {
             do {
                 try awesomePlayer = AVAudioPlayer(data: sound.data)
@@ -73,8 +42,31 @@ class ViewController: UIViewController {
         } else {
             print("ERROR: File \(soundName) didn't load.")
         }
+    }
+    @IBAction func showMessagePressed(_ sender: UIButton) {
+        let messages = ["You Are Fantastic!!!",
+                        "You Are Great!",
+                        "You Are Amazing!",
+                        "When the Genius Bar needs help, they call you",
+                        "You brighten my day!",
+                        "You are da Bomb!",
+                        "Hey, fabulous!",
+                        "You are tremendous!",
+                        "You've got the design skills of Jony Ive!"]
         
+        //show a message
+        index = nonRepeatingRandom(lastNumber: index, maxValue: messages.count)
+        messageLabel.text = messages[index]
         
+        //show an image
+        imageIndex = nonRepeatingRandom(lastNumber: imageIndex, maxValue: numberOfImages)
+        awesomeImageView.image = UIImage(named: "image\(imageIndex)")
+        
+        //play a sound
+        soundIndex = nonRepeatingRandom(lastNumber: soundIndex, maxValue: numberOfSounds)
+        let soundName = "sound\(soundIndex)"
+        playSound(soundName: soundName)
+    
     }
 
 }
